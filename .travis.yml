@@ -1,0 +1,30 @@
+
+# Travis CI Java documentation can be found in:
+# https://docs.travis-ci.com/user/languages/java/
+
+# Each job in Travis CI has several steps:
+# https://docs.travis-ci.com/user/job-lifecycle/
+# The 'language: java' directive sets up sane defaults to test common java applications
+# Enable the 'defaults' to test java application
+language: java
+
+# Specify the JDK version used
+jdk:
+  - openjdk11
+
+# Dont run the default install step
+# ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+install: true
+
+# Keep the local maven repository between various runs to speed up the build process
+cache:
+  directories:
+    - $HOME/.m2
+
+# Change the mvnw permission so the build can use it
+before_install:
+  - chmod +x mvnw
+
+# Use this custom install
+script:
+  ./mvnw clean install -Dmaven.test.skip=true
